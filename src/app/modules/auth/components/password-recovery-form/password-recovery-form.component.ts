@@ -13,10 +13,9 @@ export class PasswordRecoveryFormComponent implements OnInit {
   passwordsForm: FormGroup<PasswordsForm> =
     this.formSerivce.initPasswordsForm();
 
-  get controls() {
+  get controls(): PasswordsForm {
     return this.passwordsForm.controls;
   }
-
   constructor(
     private formSerivce: FormService,
     private route: ActivatedRoute,

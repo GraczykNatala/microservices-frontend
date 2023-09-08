@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AppState } from './store/app.reducer';
+import * as AuthActions from '../app/modules/auth/store/auth.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent {
   title = 'microservices-fe';
+  constructor(private store: Store<AppState>) {}
 }

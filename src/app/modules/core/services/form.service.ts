@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   LoginForm,
   PasswdRecoveryForm,
@@ -31,16 +31,16 @@ export class FormService {
           ],
           nonNullable: true,
         }),
-        repeatPassword: new FormControl('', {
+        repeatedPassword: new FormControl('', {
           validators: [
             Validators.required,
             Validators.minLength(8),
-            Validators.maxLength(50),
+            Validators.maxLength(75),
           ],
           nonNullable: true,
         }),
       },
-      { validators: [equivalentValidator('password', 'repeatPassword')] },
+      { validators: [equivalentValidator('password', 'repeatedPassword')] },
     );
   }
   initLoginForm(): FormGroup<LoginForm> {
@@ -86,17 +86,16 @@ export class FormService {
         ],
         nonNullable: true,
       }),
-      repeatPassword: new FormControl('', {
+      repeatedPassword: new FormControl('', {
         validators: [
           Validators.required,
           Validators.minLength(8),
-          Validators.maxLength(50),
+          Validators.maxLength(75),
         ],
         nonNullable: true,
       }),
     });
   }
-
   getErrorMessage(control: FormControl): string {
     if (control.hasError('required')) {
       return 'Ta kontrolka jest wymagana.';
@@ -108,10 +107,10 @@ export class FormService {
       return `Maksymalna ilość znaków: ${control.errors?.['maxlength']?.requiredLength}.`;
     }
     if (control.hasError('email')) {
-      return `Niepoprawny adres email.`;
+      return `Niepoprawny adres e-mail.`;
     }
     if (control.hasError('passwordsNotEqual')) {
-      return `Hasła muszą być takie same.`;
+      return 'Hasła muszą być takie same.';
     }
     return '';
   }

@@ -15,8 +15,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  apiUrl = environment.apiUrl;
-
+  apiUrl = `${environment.apiUrl}/auth`;
   constructor(private http: HttpClient) {}
 
   login(body: LoginData): Observable<IUser> {
@@ -31,7 +30,10 @@ export class AuthService {
   }
   activateAccount(uid: string): Observable<AuthResponse> {
     const params = new HttpParams().append('uid', uid);
-    return this.http.get<AuthResponse>(`${this.apiUrl}/activate`, { params });
+
+    return this.http.get<AuthResponse>(`${this.apiUrl}/activate`, {
+      params,
+    });
   }
 
   resetPassword(body: ResetPasswordData): Observable<AuthResponse> {

@@ -1,8 +1,6 @@
 import { User } from '../../core/models/auth.model';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
-import { state } from '@angular/animations';
-import { act } from '@ngrx/effects';
 export interface AuthState {
   user: User | null;
   loading: boolean;

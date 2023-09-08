@@ -3,8 +3,11 @@ import { FormService } from '../../../core/services/form.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RegisterForm } from '../../../core/models/forms.model';
 import * as AuthActions from '../../store/auth.actions';
-import { AppState } from '../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store/app.reducer';
+import { Observable } from 'rxjs';
+import { selectAuthError, selectAuthLoading } from '../../store/auth.selectors';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -12,32 +15,38 @@ import { Store } from '@ngrx/store';
 })
 export class RegisterComponent implements OnDestroy {
   registerForm: FormGroup<RegisterForm> = this.formService.initRegisterForm();
+  notMatchingPasswordsErr: null | string = null;
 
-  notMatchingPasswordsError: null | string = null;
-  constructor(
-    private formService: FormService,
-    private store: Store<AppState>,
-  ) {}
+  errorMsg$: Observable<string | null> = this.store.select(selectAuthError);
+  loading$: Observable<boolean> = this.store.select(selectAuthLoading);
 
   get controls(): RegisterForm {
     return this.registerForm.controls;
   }
+
+  constructor(
+    private formService: FormService,
+    private store: Store<AppState>
+  ) {}
 
   getErrorMessage(control: FormControl): string {
     return this.formService.getErrorMessage(control);
   }
 
   onRegister() {
-    const { login, email, password, repeatPassword } =
+    const { login, email, password, repeatedPassword } =
       this.registerForm.getRawValue();
-    if (password !== repeatPassword) {
-      this.notMatchingPasswordsError = 'Hasła nie mogą byc różne.';
+
+    if (password !== repeatedPassword) {
+      this.notMatchingPasswordsErr = 'Hasła nie mogą być różne.';
       return;
     }
+
     this.store.dispatch(
-      AuthActions.register({ registerData: { login, email, password } }),
+      AuthActions.register({ registerData: { login, email, password } })
     );
   }
+
   ngOnDestroy(): void {
     this.store.dispatch(AuthActions.clearError());
   }

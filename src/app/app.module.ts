@@ -34,7 +34,7 @@ const customNotifier: NotifierOptions = {
     CoreModule,
     AuthModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot({ auth: authReducer }, {}),
+    StoreModule.forRoot({ auth: authReducer }),
     EffectsModule.forRoot([AuthEffects]),
     NotifierModule.withConfig(customNotifier),
   ],

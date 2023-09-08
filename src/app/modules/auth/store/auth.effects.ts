@@ -13,9 +13,7 @@ export class AuthEffects {
       switchMap((action) => {
         return this.authService.login(action.loginData).pipe(
           map((user) => AuthActions.loginSuccess({ user: { ...user } })),
-          catchError((err) =>
-            of(AuthActions.loginFailure({ error: 'Wystąpił błąd. ' })),
-          ),
+          catchError((err) => of(AuthActions.loginFailure({ error: err }))),
         );
       }),
     );
@@ -28,21 +26,24 @@ export class AuthEffects {
         return this.authService.register(action.registerData).pipe(
           map((user) => {
             this.router.navigate(['/logowanie']);
-            this.notifier.notify('success', 'Poprawnie utworzono konto!');
+            this.notifierService.notify(
+              'success',
+              'Poprawnie utworzono konto użytkownika! Aktywuj konto na podanym adresie e-mail.',
+            );
             return AuthActions.registerSuccess();
           }),
-          catchError((err) =>
-            of(AuthActions.registerFailure({ error: 'Wystąpił błąd. ' })),
-          ),
+          catchError((err) => {
+            console.log(err);
+            return of(AuthActions.loginFailure({ error: err }));
+          }),
         );
       }),
     );
   });
-
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private router: Router,
-    private notifier: NotifierService,
+    private notifierService: NotifierService,
   ) {}
 }
