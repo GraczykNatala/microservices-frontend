@@ -45,6 +45,6 @@ export class AuthService {
   }
 
   changePassword(body: ChangePasswordData): Observable<AuthResponse> {
-    return this.http.patch<AuthResponse>(`${this.apiUrl}/register`, body);
+    return this.http.patch<AuthResponse>(`${this.apiUrl}/reset-password`, body);
   }
 }
