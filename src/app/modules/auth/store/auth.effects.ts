@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from '../../core/services/auth.service';
 import * as AuthActions from './auth.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, EMPTY, map, of, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 @Injectable()
@@ -18,6 +18,20 @@ export class AuthEffects {
             return AuthActions.loginSuccess({ user: { ...user } });
           }),
           catchError((err) => of(AuthActions.loginFailure({ error: err }))),
+        );
+      }),
+    );
+  });
+
+  autoLogin$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.autoLogin),
+      switchMap(() => {
+        return this.authService.autoLogin().pipe(
+          map((user) => {
+            return AuthActions.autoLoginSuccess({ user: { ...user } });
+          }),
+          catchError((err) => of(AuthActions.autoLoginFailure())),
         );
       }),
     );

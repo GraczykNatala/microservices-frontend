@@ -17,7 +17,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMsg = '';
-        if (error.status >= 400 && error.status < 500) {
+        if (error.status >= 400 && error.status < 500 && error.error != null) {
           errorMsg = error.error.message || 'Wystąpił błąd. Spróbuj ponownie.';
         } else {
           errorMsg = 'Wystąpił błąd. Spróbuj ponownie.';

@@ -8,7 +8,11 @@ import { Store } from '@ngrx/store';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'microservices-fe';
   constructor(private store: Store<AppState>) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(AuthActions.autoLogin());
+  }
 }
